@@ -2,3 +2,4 @@ vendor/*
 composer.*
 VeloFrame/cache/*
 database.db
+config/config.ini
