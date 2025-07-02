@@ -53,9 +53,11 @@ class UserRepository
 
     public function createUser(User $user)
     {
-        $stmt = $this->db->prepare("INSERT INTO users (username, password) VALUES (:username, :password)");
+        $stmt = $this->db->prepare("INSERT INTO users (username, password, created_on) VALUES (:username, :password, :created_on)");
+        $user->setCreatedOn(time()); // Set creation timestamp
+        $stmt->bindParam(':created_on', $user->getCreatedOn(), \PDO::PARAM_INT);
         $stmt->bindParam(':username', $user->getUsername());
-        $stmt->bindParam(':password', password_hash($user->getPassword(), PASSWORD_BCRYPT));
+        $stmt->bindParam(':password', $user->getPassword());
 
         if ($stmt->execute()) {
             $user->setId($this->db->lastInsertId());

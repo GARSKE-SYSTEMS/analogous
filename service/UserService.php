@@ -13,6 +13,11 @@ class UserService
     public static function createUser($username, $password): ?User
     {
         $userRepo = new UserRepository();
+        $user = $userRepo->getUserByUsername($username);
+        if (!is_null($user)) {
+            return null;
+        }
+        $password = password_hash($password, PASSWORD_BCRYPT);
         $user = new User(null, $username, $password, date('Y-m-d H:i:s'));
         return $userRepo->createUser($user);
     }

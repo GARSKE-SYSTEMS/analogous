@@ -39,7 +39,7 @@ class User
         return $this->password;
     }
 
-    public function getCreatedAt()
+    public function getCreatedOn()
     {
         return $this->created_on;
     }
@@ -57,6 +57,11 @@ class User
     public function setPassword($password)
     {
         $this->password = $password;
+    }
+
+    public function setId($id)
+    {
+        $this->id = $id;
     }
 
     public function __toString()

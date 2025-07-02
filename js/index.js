@@ -143,6 +143,23 @@ function createToken(collectorId, callback = null) {
     });
 }
 
+function createUserAccount(username, password, callback = null) {
+    let params = {
+        'username': username,
+        'password': password
+    };
+    GETRequest('/api/users/create', params, (error, data) => {
+        if (error) {
+            console.error('Error creating user account:', error);
+            return;
+        }
+        console.log('User account created:', data);
+        if (callback) {
+            callback(data.user);
+        }
+    });
+}
+
 // UI FUNCTIONS
 
 function updateServerList() {
