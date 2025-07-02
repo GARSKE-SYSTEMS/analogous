@@ -15,8 +15,8 @@ let line_offset = 0;
 // HELPER FUNCTIONS
 
 function GETRequest(base_url, params, callback) {
-    // use window.location.origin as the base for relative URLs
-    let url = new URL(base_url, window.location.origin);
+    // use current page URL as the base for relative URLs to support subdirectories
+    let url = new URL(base_url, window.location.href);
     params.csrf_token = window.csrf_token; // Include CSRF token in the request parameters
     Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
 
