@@ -1,3 +1,4 @@
 vendor/*
 composer.*
 VeloFrame/cache/*
+database.db

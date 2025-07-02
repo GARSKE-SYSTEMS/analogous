@@ -12,10 +12,12 @@ class Database
 {
 
     private static $instance = null;
-    private $pdo;
+    private $connection;
 
     private function __construct()
     {
+        $this->connect();
+        $this->checkAndBuildTables();
     }
 
     public static function getInstance()
@@ -26,7 +28,7 @@ class Database
         return self::$instance;
     }
 
-    public function connect($dsn, $username, $password)
+    public function connect()
     {
         $type = ConfigHelper::getConfigValue("database.type", "sqlite", true);
 

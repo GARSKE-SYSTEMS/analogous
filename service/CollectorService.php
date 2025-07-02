@@ -16,7 +16,7 @@ class CollectorService
 
     public static function createNewTokenFromCollector(Collector $collector)
     {
-        $token = new Token(null, $collector, bin2hex(random_bytes(64)), time());
+        $token = new Token(null, $collector, bin2hex(random_bytes(32)), time());
         return $token;
     }
 

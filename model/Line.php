@@ -15,7 +15,7 @@ class Line
     private $collector;
     private $content;
 
-    public function __construct($id = null, Collector $collector, $content)
+    public function __construct($id = null, $collector, $content)
     {
         $this->id = $id;
         $this->collector = $collector;
@@ -53,10 +53,13 @@ class Line
 
     public static function fromArray(array $data)
     {
-        if (!isset($data['id']) || !isset($data['collector']) || !isset($data['content'])) {
+        $collector = null;
+        if (!isset($data['id']) || !isset($data['content'])) {
             throw new \InvalidArgumentException('Invalid data for Line model');
         }
-        $collector = Collector::fromArray($data['collector']);
+        if (isset($data["collector"])) {
+            $collector = $data['collector'];
+        }
         return new self($data['id'], $collector, $data['content']);
     }
 

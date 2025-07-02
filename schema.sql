@@ -1,36 +1,31 @@
-CREATE TABLE IF NOT EXISTS `collector` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `server_id` int(11) NOT NULL,
-  `name` tinytext NOT NULL,
-  PRIMARY KEY (`id`)
+CREATE TABLE IF NOT EXISTS `collectors` (
+  `id` INTEGER PRIMARY KEY AUTOINCREMENT /*!50003 AUTO_INCREMENT */,
+  `server_id` INTEGER NOT NULL,
+  `name` TEXT NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS `line` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `collector_id` int(11) NOT NULL,
-  `content` varchar(4096) NOT NULL,
-  PRIMARY KEY (`id`)
+CREATE TABLE IF NOT EXISTS `lines` (
+  `id` INTEGER PRIMARY KEY AUTOINCREMENT /*!50003 AUTO_INCREMENT */,
+  `collector_id` INTEGER NOT NULL,
+  `content` TEXT NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS `server` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` tinytext NOT NULL,
-  `ip` tinytext NOT NULL,
-  PRIMARY KEY (`id`)
+CREATE TABLE IF NOT EXISTS `servers` (
+  `id` INTEGER PRIMARY KEY AUTOINCREMENT /*!50003 AUTO_INCREMENT */,
+  `name` TEXT NOT NULL,
+  `ip` TEXT NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS `token` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `collector_id` int(11) NOT NULL,
-  `content` tinytext NOT NULL,
-  `created_at` bigint(20) NOT NULL,
-  PRIMARY KEY (`id`)
+CREATE TABLE IF NOT EXISTS `tokens` (
+  `id` INTEGER PRIMARY KEY AUTOINCREMENT /*!50003 AUTO_INCREMENT */,
+  `collector_id` INTEGER NOT NULL,
+  `content` TEXT NOT NULL,
+  `created_at` INTEGER NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS `users` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `username` tinytext NOT NULL,
-  `password` text NOT NULL,
-  `created_on` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
+  `id` INTEGER PRIMARY KEY AUTOINCREMENT /*!50003 AUTO_INCREMENT */,
+  `username` TEXT NOT NULL,
+  `password` TEXT NOT NULL,
+  `created_on` INTEGER NOT NULL
 );

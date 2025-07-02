@@ -49,6 +49,11 @@ class Collector
         $this->server = $server;
     }
 
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+
     public function toArray()
     {
         return [
@@ -63,7 +68,7 @@ class Collector
         if (!isset($data['id']) || !isset($data['server']) || !isset($data['name'])) {
             throw new \InvalidArgumentException('Invalid data for Collector model');
         }
-        $server = Server::fromArray($data['server']);
+        $server = $data['server'];
         return new self($data['id'], $server, $data['name']);
     }
 

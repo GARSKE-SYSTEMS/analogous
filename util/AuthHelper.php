@@ -15,6 +15,9 @@ class AuthHelper
 
     public static function requireLogin()
     {
+        if (!ConfigHelper::getConfigValue('auth.enabled', true, true)) {
+            return true; // Authentication is disabled, allow access
+        }
         if (session_status() == PHP_SESSION_NONE) {
             session_start();
         }

@@ -47,12 +47,9 @@ class CollectorRepository
         }
 
         // build the collector
-        $collector = Collector::fromArray($row);
-
-        // fetch & set its Server
         $serverRepo = new ServerRepository();
-        $server = $serverRepo->getServerById($row['server_id']);
-        $collector->setServer($server);
+        $row["server"] = $serverRepo->getServerById($row['server_id']);
+        $collector = Collector::fromArray($row);
 
         return $collector;
     }
@@ -66,10 +63,8 @@ class CollectorRepository
 
         $serverRepo = new ServerRepository();
         while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+            $row['server'] = $serverRepo->getServerById($row['server_id']);
             $collector = Collector::fromArray($row);
-            $collector->setServer(
-                $serverRepo->getServerById($row['server_id'])
-            );
             $collectors[] = $collector;
         }
 

@@ -69,4 +69,29 @@ class TokenRepository
         return $stmt->execute();
     }
 
+    /**
+     * Fetch all Tokens for a given collector ID.
+     *
+     * @param int $collectorId
+     * @return Token[]
+     */
+    public function getTokensByCollectorId(int $collectorId): array
+    {
+        $stmt = $this->db->prepare("SELECT * FROM tokens WHERE collector_id = :collector_id");
+        $stmt->bindValue(':collector_id', $collectorId, \PDO::PARAM_INT);
+        $stmt->execute();
+        $tokens = [];
+        $collectorRepo = new CollectorRepository();
+        while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+            $collector = $collectorRepo->getCollectorById($row['collector_id']);
+            $tokens[] = new Token(
+                $row['id'],
+                $collector,
+                $row['content'],
+                $row['created_at']
+            );
+        }
+        return $tokens;
+    }
+
 }

@@ -76,6 +76,26 @@ class ConfigHelper
             $config = &$config[$k];
         }
         $config = $value; // Set the value
+        // Save the updated configuration back to the config.ini file
+        self::saveConfig();
+
+    }
+
+    public static function saveConfig()
+    {
+        if (!isset($GLOBALS["cb_config"])) {
+            return; // No configuration loaded
+        }
+        $configFile = __DIR__ . '/../config/config.ini';
+        $configContent = '';
+        foreach ($GLOBALS["cb_config"] as $section => $values) {
+            $configContent .= "[$section]\n";
+            foreach ($values as $key => $value) {
+                $configContent .= "$key = \"$value\"\n";
+            }
+            $configContent .= "\n";
+        }
+        file_put_contents($configFile, $configContent);
     }
 
 }
