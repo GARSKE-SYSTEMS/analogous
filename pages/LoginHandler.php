@@ -46,7 +46,7 @@ class LoginHandler extends WF\DefaultPageController
         }
 
         // On successful login, redirect to dashboard
-        header('Location: /');
+        header('Location: index');
         exit();
     }
 }

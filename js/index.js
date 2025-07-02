@@ -40,7 +40,7 @@ function GETRequest(base_url, params, callback) {
 // API HANDLER FUNCTIONS
 
 function fetchAllServers(callback = null) {
-    GETRequest('/api/servers', {}, (error, data) => {
+    GETRequest('api/servers', {}, (error, data) => {
         if (error) {
             console.error('Error fetching servers:', error);
             return;
@@ -54,7 +54,7 @@ function fetchAllServers(callback = null) {
 }
 
 function fetchServerCollectors(serverId, callback = null) {
-    GETRequest(`/api/collectors/fromserver`, {'server_id':serverId}, (error, data) => {
+    GETRequest(`api/collectors/fromserver`, {'server_id':serverId}, (error, data) => {
         if (error) {
             console.error(`Error fetching collectors for server ${serverId}:`, error);
             return;
@@ -66,7 +66,7 @@ function fetchServerCollectors(serverId, callback = null) {
 }
 
 function fetchCollectorLog(collectorId, offset = 0, callback = null) {
-    GETRequest(`/api/loglines/fromcollector`, {'collector_id': collectorId, 'offset': offset, 'limit': 100}, (error, data) => {
+    GETRequest(`api/loglines/fromcollector`, {'collector_id': collectorId, 'offset': offset, 'limit': 100}, (error, data) => {
         if (error) {
             console.error(`Error fetching log for collector ${collectorId}:`, error);
             return;
@@ -81,7 +81,7 @@ function fetchCollectorLog(collectorId, offset = 0, callback = null) {
 }
 
 function fetchCollectorTokens(collectorId, callback = null) {
-    GETRequest(`/api/tokens/fromcollector`, {'collector_id': collectorId}, (error, data) => {
+    GETRequest(`api/tokens/fromcollector`, {'collector_id': collectorId}, (error, data) => {
         if (error) {
             console.error(`Error fetching tokens for collector ${collectorId}:`, error);
             return;
@@ -99,7 +99,7 @@ function createServer(name, ip, callback = null) {
         'name': name,
         'ip': ip
     };
-    GETRequest('/api/servers/create', params, (error, data) => {
+    GETRequest('api/servers/create', params, (error, data) => {
         if (error) {
             console.error('Error creating server:', error);
             return;
@@ -116,7 +116,7 @@ function createCollector(name, serverId, callback = null) {
         'name': name,
         'server_id': serverId
     };
-    GETRequest('/api/collectors/create', params, (error, data) => {
+    GETRequest('api/collectors/create', params, (error, data) => {
         if (error) {
             console.error('Error creating collector:', error);
             return;
@@ -131,7 +131,7 @@ function createToken(collectorId, callback = null) {
     let params = {
         'collector_id': collectorId
     };
-    GETRequest('/api/tokens/create', params, (error, data) => {
+    GETRequest('api/tokens/create', params, (error, data) => {
         if (error) {
             console.error('Error creating token:', error);
             return;
@@ -148,7 +148,7 @@ function createUserAccount(username, password, callback = null) {
         'username': username,
         'password': password
     };
-    GETRequest('/api/users/create', params, (error, data) => {
+    GETRequest('api/users/create', params, (error, data) => {
         if (error) {
             console.error('Error creating user account:', error);
             return;
