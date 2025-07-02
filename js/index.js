@@ -1,8 +1,11 @@
 // GLOBAL DATA
 let showTokensModal;
+let createServerModal;
+let addCollectorModal;
 
 window.csrf_token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 let servers = [];
+let current_server = 0;
 let collectors = [];
 let current_collector = 0;
 let lines = [];
@@ -91,6 +94,54 @@ function fetchCollectorTokens(collectorId, callback = null) {
     });
 }
 
+function createServer(name, ip, callback = null) {
+    let params = {
+        'name': name,
+        'ip': ip
+    };
+    GETRequest('/api/servers/create', params, (error, data) => {
+        if (error) {
+            console.error('Error creating server:', error);
+            return;
+        }
+        console.log('Server created:', data);
+        if (callback) {
+            callback(data.server);
+        }
+    });
+}
+
+function createCollector(name, serverId, callback = null) {
+    let params = {
+        'name': name,
+        'server_id': serverId
+    };
+    GETRequest('/api/collectors/create', params, (error, data) => {
+        if (error) {
+            console.error('Error creating collector:', error);
+            return;
+        }
+        if (callback) {
+            callback(data.collector);
+        }
+    });
+}
+
+function createToken(collectorId, callback = null) {
+    let params = {
+        'collector_id': collectorId
+    };
+    GETRequest('/api/tokens/create', params, (error, data) => {
+        if (error) {
+            console.error('Error creating token:', error);
+            return;
+        }
+        console.log('Token created:', data);
+        if (callback) {
+            callback(data.token);
+        }
+    });
+}
 
 // UI FUNCTIONS
 
@@ -100,14 +151,22 @@ function updateServerList() {
     servers.forEach(server => {
         var listItem = document.createElement('button');
         listItem.className = 'list-group-item list-group-item-action';
-        listItem.innerHTML = server.name;
+        listItem.innerHTML = server.name + '<br><small> (' + server.ip + ')</small>';
         listItem.onclick = function() {
+            current_server = server.id; // Store the current server ID
             fetchServerCollectors(server.id, (collectors) => {
                 updateCollectorList();
             });
         };
         serverList.appendChild(listItem);
     });
+    var addItem = document.createElement('button');
+    addItem.className = 'list-group-item list-group-item-action';
+    addItem.innerHTML = '+ Add Server';
+    addItem.onclick = function() {
+        createServerModal.show(); // Show the modal to create a new server
+    };
+    serverList.appendChild(addItem);
 }
 
 function updateCollectorList() {
@@ -158,10 +217,63 @@ function showTokens() {
             listItem.textContent = token.content;
             tokenlist_dom.appendChild(listItem);
         });
+        var addTokenBtn = document.createElement('li');
+        addTokenBtn.className = 'list-group-item list-group-item-action';
+        addTokenBtn.textContent = '+ Add Token';
+        addTokenBtn.onclick = function() {
+            createToken(current_collector, (token) => {
+                console.log('Created token:', token);
+                fetchCollectorTokens(current_collector, (tokens) => {
+                    showTokens(); // Update the token list after creation
+                });
+            });
+        };
+        tokenlist_dom.appendChild(addTokenBtn);
         showTokensModal.show(); // Show the modal with tokens
     });
 }
 
+// FORM FUNCTIONS
+
+function handleCreateServerForm(event) {
+    event.preventDefault(); // Prevent the default form submission
+
+    // Get form values
+    var serverName = document.getElementById('serverName').value;
+    var serverIp = document.getElementById('serverIp').value;
+
+    // Call the createServer function
+    createServer(serverName, serverIp, (server) => {
+        console.log('Created server:', server);
+        createServerModal.hide(); // Hide the modal after creation
+        fetchAllServers((servers) => {
+            updateServerList(); // Update the server list after creation
+        });
+        document.getElementById('createServerForm').reset(); // Reset the form
+    });
+}
+
+function handleAddCollectorForm(event) {
+    event.preventDefault(); // Prevent the default form submission
+
+    // Get form values
+    var collectorName = document.getElementById('collectorName').value;
+    var collectorServerId = current_server;
+
+    // Call the createCollector function (not implemented yet)
+    // Assuming you have a function to create a collector
+    console.log(`Adding collector: ${collectorName} to server ID ${collectorServerId}`);
+    createCollector(collectorName, collectorServerId, (collector) => {
+        console.log('Created collector:', collector);
+        addCollectorModal.hide(); // Hide the modal after creation
+        fetchServerCollectors(collectorServerId, (collectors) => {
+            updateCollectorList();
+        });
+    });
+
+    // Reset the form after submission
+    document.getElementById('addCollectorForm').reset();
+}
 
 
 // RUNTIME
@@ -170,4 +282,6 @@ document.addEventListener('DOMContentLoaded', () => {
         updateServerList();
     });
     showTokensModal = new bootstrap.Modal(document.getElementById('showTokensModal'));
+    createServerModal = new bootstrap.Modal(document.getElementById('createServerModal'));
+    addCollectorModal = new bootstrap.Modal(document.getElementById('addCollectorModal'));
 });

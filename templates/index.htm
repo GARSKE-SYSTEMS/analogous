@@ -17,21 +17,13 @@
                 </div>
             </div>
             <div class="col-9">
-                <ul class="nav nav-pills" id="collector-list">
+                <ul class="nav nav-pills mb-2" id="collector-list">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Active</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Link</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Link</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+                        <a class="nav-link active" aria-current="page" href="#">Please select a Server</a>
                     </li>
                 </ul>
-                <button class="btn btn-outline-primary" onclick="showTokens()">View Tokens</button>
+                <button class="btn btn-outline-secondary" onclick="addCollectorModal.show()">Add Collector</button>
+                <button class="btn btn-outline-secondary" onclick="showTokens()">View Tokens</button>
                 <hr>
                 <table class="table">
                     <thead>
@@ -49,7 +41,7 @@
     </_container>
     {![js_deps]}
 
-    <!-- Modal -->
+    <!-- Show Tokens Modal -->
     <div class="modal fade" id="showTokensModal" tabindex="-1" aria-labelledby="showTokensModalTitle"
         aria-hidden="true">
         <div class="modal-dialog modal-xl">
@@ -65,6 +57,60 @@
                     <hr>
                     <ul class="list-group" id="token-list">
                     </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Create Server Modal -->
+    <div class="modal fade" id="createServerModal" tabindex="-1" aria-labelledby="createServerModalTitle"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="createServerModalTitle">Create Server</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="createServerForm" onSubmit="handleCreateServerForm(event)">
+                        <div class="mb-3">
+                            <label for="serverName" class="form-label">Server Name</label>
+                            <input type="text" class="form-control" id="serverName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="serverIp" class="form-label">Server IP</label>
+                            <input type="text" class="form-control" id="serverIp" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Create Server</button>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Collector Modal -->
+    <div class="modal fade" id="addCollectorModal" tabindex="-1" aria-labelledby="addCollectorModalTitle"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="addCollectorModalTitle">Add Collector</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addCollectorForm" onSubmit="handleAddCollectorForm(event)">
+                        <div class="mb-3">
+                            <label for="collectorName" class="form-label">Collector Name</label>
+                            <input type="text" class="form-control" id="collectorName" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Create Collector</button>
+                    </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

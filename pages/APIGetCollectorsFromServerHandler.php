@@ -32,7 +32,11 @@ class APIGetCollectorsFromServerHandler extends WF\DefaultPageController
         $crepo = new CollectorRepository();
         $collectors = $crepo->getCollectorsByServerId($server_id);
         if (!$collectors) {
-            return new WF\HTTPResponse("No collectors found for server ID $server_id", 404);
+            $response = [
+                'collectors' => [],
+                'csrf_token' => CSRFHelper::generateToken()
+            ];
+            return json_encode($response);
         }
 
         $ret = array();
