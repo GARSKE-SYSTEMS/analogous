@@ -27,7 +27,11 @@ class APIGetServersHandler extends WF\DefaultPageController
         $repo = new ServerRepository();
         $servers = $repo->getAllServers();
         if (!$servers) {
-            return new WF\HTTPResponse("No servers found", 404);
+            $response = [
+                'servers' => [],
+                'csrf_token' => CSRFHelper::generateToken()
+            ];
+            return json_encode($response);
         }
 
         $ret = [];
