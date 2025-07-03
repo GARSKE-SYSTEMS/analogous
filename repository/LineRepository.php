@@ -43,7 +43,7 @@ class LineRepository
         $lines = [];
 
         while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
-            $row['collector'] = new CollectorRepository()->getCollectorById($row['collector_id']);
+            $row['collector'] = (new CollectorRepository())->getCollectorById($row['collector_id']);
             $lines[] = Line::fromArray($row);
         }
 
