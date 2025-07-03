@@ -35,9 +35,6 @@ class DataIngestHandler extends WF\DefaultPageController
             return new WF\HTTPResponse("No data provided", 400);
         }
 
-        // Invert array to process from oldest to newest
-        $lines = array_reverse($lines);
-
         foreach ($lines as $body) {
             $line = new Line(null, $token->getCollector(), $body);
             $lineRepo = new LineRepository();
